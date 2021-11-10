@@ -12,7 +12,7 @@ repositories {
 dependencies {
 
     testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
-
+    implementation fileTree(dir:'lib', include:'*.jar')
     testImplementation 'org.codehaus.groovy:groovy-all:3.0.8'
 }
 
