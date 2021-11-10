@@ -2,6 +2,7 @@ import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
+@SuppressWarnings("unchecked")
 public class CopyGraph {
     Bag<Integer>[] adj;
     private final int V;
@@ -23,23 +24,24 @@ public class CopyGraph {
         E++;
     }
 
-    public CopyGraph(int V) {
+    public CopyGraph(Integer V) {
         this.V = V;
+
         adj = (Bag<Integer>[]) new Bag[V];
         for (int v = 0; v < V; v++) {
-            adj[v] = new Bag<Integer>();
+            adj[v] = new Bag<>();
         }
     }
 
-    public CopyGraph CopyGraph(CopyGraph g) {
-        CopyGraph gg = new CopyGraph(g.V());
+    public CopyGraph(CopyGraph g) {
+        this(g.V());
         for (int v = 0; v < g.V(); v++) {
-            for (int w:adj[v]) {
+            this.adj[v] = new Bag<>();
+            for (int w : g.adj[v]) {
                 //gg.addEdge(v,w);
-                gg.adj[v].add(w);
+                this.adj[v].add(w);
             }
         }
-        return gg;
     }
 
     public String toString() {
@@ -62,15 +64,21 @@ public class CopyGraph {
         return E;
     }
 
+    // exercise 4.1.4
+    public boolean hasEdge(int v, int w) {
+        for (int ww : adj[v]) {
+            if (ww == w) return true;
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         In in = new In(args[0]);
-        //CopyGraph cG = new CopyGraph(in);
         CopyGraph originalGraph = new CopyGraph(in);
-        StdOut.println("Here is the original graph: "+originalGraph);
-        CopyGraph newGraph = originalGraph.CopyGraph(originalGraph);
-        StdOut.println("Here is the copy: "+newGraph);
-        originalGraph.addEdge(0,12);
-        StdOut.println("Here is the original graph: "+originalGraph);
-        StdOut.println("Here is the copy: "+newGraph);
+        StdOut.println("Here is the original graph: " + originalGraph);
+        CopyGraph newGraph = new CopyGraph(originalGraph);
+        StdOut.println("Here is the copy: " + newGraph);
+        StdOut.println("Is 0,5 an edge? " + originalGraph.hasEdge(0, 5));
+        StdOut.println("Is 0,7 an edge? " + originalGraph.hasEdge(0, 7));
     }
 }
