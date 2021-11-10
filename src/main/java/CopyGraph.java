@@ -67,6 +67,10 @@ public class CopyGraph {
         //CopyGraph cG = new CopyGraph(in);
         CopyGraph originalGraph = new CopyGraph(in);
         StdOut.println("Here is the original graph: "+originalGraph);
-        StdOut.println("Here is the copy: "+originalGraph.CopyGraph(originalGraph));
+        CopyGraph newGraph = originalGraph.CopyGraph(originalGraph);
+        StdOut.println("Here is the copy: "+newGraph);
+        originalGraph.addEdge(0,12);
+        StdOut.println("Here is the original graph: "+originalGraph);
+        StdOut.println("Here is the copy: "+newGraph);
     }
 }
