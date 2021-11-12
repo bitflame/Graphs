@@ -80,6 +80,7 @@ public class CopyGraph {
         StdOut.println("Here is the copy: " + newGraph);
         originalGraph.addEdge(0,12);
         StdOut.println("Here is the modified version of the original graph: " + originalGraph);
+        StdOut.println();
         StdOut.println("Here is the copy: " + newGraph);
         StdOut.println("Is 0,5 an edge? " + originalGraph.hasEdge(0, 5));
         StdOut.println("Is 0,7 an edge? " + originalGraph.hasEdge(0, 7));
