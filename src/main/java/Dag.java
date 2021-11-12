@@ -4,8 +4,8 @@ public class Dag {
     public static void main(String[] args) {
         In in = new In(args[0]);
         Digraph d = new Digraph(in);
-        // StdOut.println("Here is tinyG.txt\n"+d);
-        // StdOut.println("Here is the reverse: \n"+d.reverse());
+        StdOut.println("Here is tinyDG.txt\n"+d);
+        StdOut.println("Here is the reverse: \n"+d.reverse());
         /* Here is how to see which nodes are reachable from vertice(s). You have to put the source in command line
         like src/main/resources/tinyG.txt 1 2 3  */
         Bag<Integer> sources = new Bag<>();
@@ -21,5 +21,9 @@ public class Dag {
         for (int i = 0; i < d.V(); i++) {
             if (dD.marked(i)) StdOut.println(i + " ");
         }
+        DirectedCycle dC = new DirectedCycle(d);
+        StdOut.println("Our graph has a cycle: "+ dC.hasCycle());
+        StdOut.println("And the nodes are: ");
+        for(int j: dC.cycle()) StdOut.println(j);
     }
 }
