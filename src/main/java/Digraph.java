@@ -2,6 +2,9 @@ import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.NoSuchElementException;
+import java.util.Stack;
+
 public class Digraph {
     private static final String NEWLINE = System.getProperty("line.separator");
     int V;
@@ -13,18 +16,51 @@ public class Digraph {
         return V;
     }
 
+    public int indegree(int v) {
+        validateVertex(v);
+        return indegree[v];
+    }
+
     public Digraph(In in) {
-        V = in.readInt();
-        indegree = new int[V];
-        adj = (Bag<Integer>[]) new Bag[V];
-        for (int i = 0; i < V; i++) {
-            adj[i] = new Bag<Integer>();
+        if (in == null) throw new IllegalArgumentException("argument is null");
+        try {
+            V = in.readInt();
+            indegree = new int[V];
+            adj = (Bag<Integer>[]) new Bag[V];
+            for (int i = 0; i < V; i++) {
+                adj[i] = new Bag<Integer>();
+            }
+            int E = in.readInt();
+            for (int i = 0; i < E; i++) {
+                int v = in.readInt();
+                int w = in.readInt();
+                addEdge(v, w);
+            }
+        } catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("invalid input format in Digraph constructor", e);
         }
-        int E = in.readInt();
-        for (int i = 0; i < E; i++) {
-            int v = in.readInt();
-            int w = in.readInt();
-            addEdge(v, w);
+
+    }
+
+    public Digraph(Digraph G) {
+        if (G == null) throw new IllegalArgumentException("argument of vertices in a Digraph must be nonnegative");
+        indegree = new int[V];
+        for (int v = 0; v < V; v++) {
+            this.indegree[v] = G.indegree(v);
+        }
+        // update adjacency list
+        adj = (Bag<Integer>[]) new Bag[V];
+        for (int v = 0; v < V; v++) {
+            adj[v]=new Bag<Integer>();
+        }
+        Stack<Integer> reverse = new Stack<>();
+        for (int i = 0; i < V; i++) {
+            for(int w: adj[i]){
+                reverse.push(w);
+            }
+            for(int w: reverse){
+                adj[i].add(w);
+            }
         }
     }
 
@@ -80,6 +116,7 @@ public class Digraph {
     public Digraph(int v) {
         this.V = v;
         this.E = 0;
+        indegree = new int[V];
         adj = (Bag<Integer>[]) new Bag[v];
         for (int i = 0; i < v; i++) {
             adj[i] = new Bag<Integer>();
