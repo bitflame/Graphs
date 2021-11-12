@@ -2,7 +2,7 @@ import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
-
+/* This code finds the first cycle - if there is one - in the Directed Graph and returns */
 public class DirectedCycle {
     private boolean[] marked;
     private int[] edgeTo;
