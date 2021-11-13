@@ -14,11 +14,22 @@ public class CopyGraph {
         for (int w = 0; w < E; w++) {
             int v = in.readInt();
             int vv = in.readInt();
-            addEdge(v, vv);
+            /* exercise 4.1.5 - In order to prevent self loops and parallel edges do the following: */
+            if (!hasEdge(v, vv))
+                addEdge(v, vv);
+            else {
+                StdOut.println("self loops are not allowed");
+            }
         }
     }
 
     public void addEdge(int v, int w) {
+        if (v == w)
+            throw new IllegalArgumentException("You can not add a self loop " + v + " and " + w + " vertices are the same" +
+                    " and they are not allowed.");
+        else if (hasEdge(v, w) == true)
+            throw new IllegalArgumentException("You can not add a parallel loop " + v + " " + w + " edge " +
+                    "is already in the adjacency table.");
         adj[v].add(w);
         adj[w].add(v);
         E++;
@@ -73,16 +84,21 @@ public class CopyGraph {
     }
 
     public static void main(String[] args) {
+        // this test client is the answer to equestion 7
         In in = new In(args[0]);
         CopyGraph originalGraph = new CopyGraph(in);
-        StdOut.println("Here is the original graph: " + originalGraph);
+        StdOut.println("Here is the original graph: \n" + originalGraph);
         CopyGraph newGraph = new CopyGraph(originalGraph);
-        StdOut.println("Here is the copy: " + newGraph);
-        originalGraph.addEdge(0,12);
-        StdOut.println("Here is the modified version of the original graph: " + originalGraph);
+        StdOut.println("Here is the copy: \n" + newGraph);
+        originalGraph.addEdge(0, 12);
+        StdOut.println("Here is the modified version of the original graph: \n" + originalGraph);
         StdOut.println();
-        StdOut.println("Here is the copy: " + newGraph);
+        StdOut.println("Here is the copy: \n" + newGraph);
         StdOut.println("Is 0,5 an edge? " + originalGraph.hasEdge(0, 5));
         StdOut.println("Is 0,7 an edge? " + originalGraph.hasEdge(0, 7));
+        StdOut.println("exer 4.1.5: Here is what happens when we try to add a parallel edge: ");
+        // originalGraph.addEdge(0, 5);
+        StdOut.println("or self loops");
+        originalGraph.addEdge(0, 0);
     }
 }

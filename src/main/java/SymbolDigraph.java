@@ -9,7 +9,7 @@ public class SymbolDigraph {
     private Digraph graph;
 
     public SymbolDigraph(String filename, String delimiter) {
-        st = new ST<String, Integer>();
+        st = new ST<>();
         In in = new In(filename);
         while (!in.isEmpty()) {
             String[] a = in.readLine().split(delimiter);
@@ -26,6 +26,7 @@ public class SymbolDigraph {
         in = new In(filename);
         while (in.hasNextLine()) {
             String[] a = in.readLine().split(delimiter);
+            // the first entry is the vertex, and the rest are its adjacency
             int v = st.get(a[0]);
             for (int i = 1; i < a.length; i++) {
                 int w = st.get(a[i]);
