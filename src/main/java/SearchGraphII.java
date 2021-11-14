@@ -21,8 +21,9 @@ public class SearchGraphII {
         return weightedQuickUnionUF.connected(s, v);
     }
 
-    public int count() {
-        return weightedQuickUnionUF.count();
+    public int count(int v) {
+        return weightedQuickUnionUF.find(s);
+
     }
 
     public static void main(String[] args) {
@@ -34,5 +35,6 @@ public class SearchGraphII {
         int s = Integer.parseInt(args[1]);
         SearchGraphII searchGraphII = new SearchGraphII(graph, 0);
         StdOut.println("For file " + fileName + " " + s + " is reachable from the source 0: " + searchGraphII.marked(s));
+        StdOut.println(searchGraphII.count(s));
     }
 }
