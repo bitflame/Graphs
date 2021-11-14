@@ -2,6 +2,11 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.UF;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class SearchGraph {
     /* We have already seen one way to implement the Search API: the union-find algo-
 rithms of Chapter 1. The constructor can build a UF object, do a union() operation
@@ -10,7 +15,8 @@ Implementing count() requires using a weighted UF implementation and extending
 its API to use a count() method that returns wt[find(v)] (see Exercise 4.1.8). But it looks like
 count is working without implementing the weighted UF. If I wanted to identify each component with
 its root, then I believe I have to use Weighted Union Find. todo: See if you can print out the nodes in
-each component */
+each component. This does not work with straight up Union Find. id[] does not get populated. I am going to
+ create SearchGraphII and use weighted Union Find */
 
     int s = 0;
     UF uf;
@@ -18,10 +24,11 @@ each component */
     int edges;
     int[] id;
     int components;
+    List<List<Integer>> componentsAdj ;
 
     public SearchGraph(In in) {
         vertices = in.readInt();
-        components=vertices;
+        components = vertices;
         id = new int[vertices];
         edges = in.readInt();
         uf = new UF(edges);
@@ -46,6 +53,25 @@ each component */
         }
     }
 
+    public List<List<Integer>> getComponentAdj() {
+        componentsAdj =  new ArrayList<>();
+        List<Integer> adjacencies = new ArrayList<>();
+        int [] temp = new int[id.length];
+        for (int i = 0; i < id.length; i++) {
+            temp[i]=id[i];
+        }
+        Arrays.sort(temp);
+        int identifier = s;
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i]==identifier)adjacencies.add(i);
+            else if (temp[i]!=identifier){
+                componentsAdj.add(adjacencies);
+                adjacencies = new ArrayList<>();
+            }
+        }
+        return componentsAdj;
+    }
+
     public boolean marked(int v) {
         return uf.connected(v, s);
 
@@ -55,7 +81,7 @@ each component */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         // finish this code
-        sb.append("The number of components according to uf.count(): "+uf.count());
+        sb.append("The number of components according to uf.count(): " + uf.count());
         return sb.toString();
     }
 
@@ -81,5 +107,14 @@ each component */
         StdOut.println("Is 12 connected to 0 ? " + searchGraph.marked(12));
         StdOut.println("There are " + searchGraph.componentCount() + " components in this graph");
         StdOut.println(searchGraph);
+        int index = 1;
+        for (List l: searchGraph.componentsAdj){
+            StdOut.println("List "+ index+" : ");
+            for(Object obj: l){
+                int current = (int) obj;
+                StdOut.print(current);
+            }
+            index++;
+        }
     }
 }
