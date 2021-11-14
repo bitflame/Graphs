@@ -1,19 +1,23 @@
 import edu.princeton.cs.algs4.Graph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
 
 import java.io.File;
 
 public class SearchGraphII {
-    WeightedQuickUnionUF weightedQuickUnionUF;
+    WeightedQuickUnionFind weightedQuickUnionUF;
     int s = 0;
-
+/* count() returns the size of each component not the entire tree. This only works with the extended WeightedQuickFind
+* that is in this project extended as follows Implementing count() requires using a weighted UF implementation and extending
+its API to use a count() method that returns wt[find(v)]  */
     SearchGraphII(Graph graph, int s) {
         this.s = s;
-        weightedQuickUnionUF = new WeightedQuickUnionUF(graph.V());
+        weightedQuickUnionUF = new WeightedQuickUnionFind(graph.V());
         for (int v = 0; v < graph.V(); v++) {
-            for (int w : graph.adj(v)) weightedQuickUnionUF.union(v, w);
+            for (int w : graph.adj(v)) {
+                weightedQuickUnionUF.union(v,w);
+            }
         }
     }
 
@@ -22,7 +26,7 @@ public class SearchGraphII {
     }
 
     public int count(int v) {
-        return weightedQuickUnionUF.find(s);
+        return weightedQuickUnionUF.extdCount(v);
 
     }
 
@@ -35,6 +39,8 @@ public class SearchGraphII {
         int s = Integer.parseInt(args[1]);
         SearchGraphII searchGraphII = new SearchGraphII(graph, 0);
         StdOut.println("For file " + fileName + " " + s + " is reachable from the source 0: " + searchGraphII.marked(s));
-        StdOut.println(searchGraphII.count(s));
+        StdOut.println("expecting 4, getting: "+searchGraphII.count(12));
+        StdOut.println("expecting 7, getting: "+searchGraphII.count(2));
+        StdOut.println("expecting 2, getting: "+searchGraphII.count(8));
     }
 }
